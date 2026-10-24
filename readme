@@ -1,0 +1,51 @@
+# MyBestSim · eSIM catalogue dashboard
+
+Live dashboard: https://ronnetanthony-cloud.github.io/mybestsim-dashboard/
+
+A small automation that reads one CSV file per eSIM supplier, cleans the data,
+computes key statistics and displays them in a web dashboard.
+
+## How it works
+
+```
+data/*.csv  →  build.js  →  stats.json  →  index.html (+ style.css, script.js)
+```
+
+1. `build.js` (Node.js, no dependency) reads every CSV in `data/`, converts the
+   values, removes duplicates and writes `stats.json`.
+2. The dashboard (`index.html`, `style.css`, `script.js`, Chart.js) loads
+   `stats.json` and renders it. It is a static page, hosted on GitHub Pages.
+
+## Run it
+
+```
+node build.js          # regenerates stats.json from data/
+npx serve              # or: python3 -m http.server, then open the printed address
+```
+
+Opening `index.html` directly does not work: browsers block `fetch` on `file://`.
+
+To update the live site: add or replace CSV files, run `node build.js`, then
+`git add stats.json`, `git commit`, `git push`.
+
+## Statistics
+
+Required: total number of cards, products over 100 €, price range, average data (GB),
+average price, number of cards per supplier.
+Extra: price distribution, 5 most expensive products, searchable and paginated
+catalogue, notes about the data.
+
+## Data decisions
+
+- **Unlimited offers** have an empty `data_gb`. They are stored as `null` and excluded
+  from the average data, which is computed on the cards that have a data amount.
+- **Duplicates**: rows with the same provider, country, data, validity and price are
+  counted once (the SKU differs, so it is not used to detect them).
+- **Currency**: all prices are in EUR in the test files, so no conversion is done.
+- **Supplier name** comes from the `provider` column, not from the file name.
+
+## Possible improvements
+
+- Fail loudly if a CSV has a different column layout or another currency.
+- Run `build.js` automatically on every push (GitHub Actions).
+- Let the user upload CSV files in the browser.
