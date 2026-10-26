@@ -45,7 +45,7 @@ const icons = {
   down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>',
   up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',
   euro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 6.5A6 6 0 0 0 7 9v6a6 6 0 0 0 10 2.5M5 10.5h9M5 13.5h9"/></svg>',
-  signal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg>'
+  signal: '<svg viewBox="0 3 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg>'
 };
 
 function render() {
@@ -237,6 +237,14 @@ function setupInteractions() {
   };
   document.getElementById("menuBtn").addEventListener("click", () => toggle(true));
   backdrop.addEventListener("click", () => toggle(false));
+
+  // Onglet déroulant de la sidebar
+  const navGroup = document.getElementById("navGroup");
+  const navToggle = document.getElementById("navToggle");
+  navToggle.addEventListener("click", () => {
+    const open = navGroup.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", open);
+  });
 
   // Search + filter: always go back to page 1
   document.getElementById("searchInput").addEventListener("input", () => { currentPage = 1; renderTable(); });

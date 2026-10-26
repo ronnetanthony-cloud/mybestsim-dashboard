@@ -61,7 +61,33 @@ button { cursor: pointer; }
 .brand-text strong { display: block; color: #fff; font-size: 16px; letter-spacing: -.01em; }
 .brand-text span { font-size: 12px; color: #7f93b3; }
 
-.nav { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.nav-group { flex: 1; }   /* pousse le footer en bas, comme l'ancien .nav */
+
+.nav-toggle {
+  display: flex; align-items: center; width: 100%;
+  padding: 8px 12px; margin-bottom: 4px;
+  background: transparent; border: 0; border-radius: 10px;
+  color: #7f93b3; font-weight: 600; font-size: 11.5px;
+  text-transform: uppercase; letter-spacing: .06em; text-align: left;
+  transition: background .15s, color .15s;
+}
+.nav-toggle:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+.chevron { margin-left: auto; transition: transform .25s ease; }
+.nav-group.open .chevron { transform: rotate(180deg); }
+
+/* Animation d'ouverture : la hauteur passe de 0fr à 1fr */
+.nav-panel {
+  display: grid; grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows .25s ease, visibility 0s .25s;
+}
+.nav-group.open .nav-panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows .25s ease, visibility 0s;
+}
+
+.nav { display: flex; flex-direction: column; gap: 3px; overflow: hidden; min-height: 0; }
 .nav-item {
   display: flex; align-items: center; gap: 12px;
   padding: 10px 12px; border-radius: 10px;
